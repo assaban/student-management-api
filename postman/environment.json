@@ -1,0 +1,10 @@
+{
+  "name": "test-environment",
+  "values": [
+    {
+      "key": "base_url",
+      "value": "http://service:8080/tutorial/1.0.0",
+      "enabled": true
+    }
+  ]
+}

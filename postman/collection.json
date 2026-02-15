@@ -1,0 +1,134 @@
+{
+  "info": {
+    "name": "Student API Tests",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Add Student",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response is a number\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.be.a('number');",
+              "    pm.environment.set(\"student_id\", jsonData);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"first_name\": \"Test\",\n  \"last_name\": \"Student\",\n  \"grade_records\": [\n    {\n      \"subject_name\": \"Math\",\n      \"grade\": 8.5\n    }\n  ]\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/student",
+          "host": ["{{base_url}}"],
+          "path": ["student"]
+        }
+      }
+    },
+    {
+      "name": "Get All Students",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response is an array\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.be.an('array');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/student",
+          "host": ["{{base_url}}"],
+          "path": ["student"]
+        }
+      }
+    },
+    {
+      "name": "Get Student by ID",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Student has correct structure\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('first_name');",
+              "    pm.expect(jsonData).to.have.property('last_name');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/student/{{student_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["student", "{{student_id}}"]
+        }
+      }
+    },
+    {
+      "name": "Delete Student",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/student/{{student_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["student", "{{student_id}}"]
+        }
+      }
+    }
+  ]
+}
