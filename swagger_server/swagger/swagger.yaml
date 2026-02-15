@@ -1,0 +1,147 @@
+openapi: 3.0.0
+info:
+  title: Student Management API
+  description: API for managing students and their grades
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/tutorial/1.0.0
+    description: Local development server
+paths:
+  /student:
+    get:
+      summary: Get all students
+      description: Returns a list of all students
+      operationId: get_students
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Student"
+                x-content-type: application/json
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+    post:
+      summary: Add a new student
+      description: Adds an item to the system
+      operationId: add_student
+      requestBody:
+        description: Student item to add
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Student"
+        required: true
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: number
+                format: float
+                x-content-type: application/json
+        "400":
+          description: Invalid input
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+  /student/{student_id}:
+    get:
+      summary: Find student by ID
+      description: Returns a single student
+      operationId: get_student
+      parameters:
+      - name: student_id
+        in: path
+        description: ID of student to return
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Student"
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Student not found
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+    delete:
+      summary: deletes a student
+      description: delete a single student
+      operationId: delete_student
+      parameters:
+      - name: student_id
+        in: path
+        description: the uid
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: successful operation
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Student not found
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+components:
+  schemas:
+    Student:
+      required:
+      - first_name
+      - last_name
+      type: object
+      properties:
+        student_id:
+          type: integer
+          format: int64
+          example: 1
+        first_name:
+          type: string
+          example: John
+        last_name:
+          type: string
+          example: Doe
+        grade_records:
+          type: array
+          items:
+            $ref: "#/components/schemas/GradeRecord"
+      example:
+        student_id: 1
+        last_name: Doe
+        grade_records:
+        - grade: 8.5
+          subject_name: Mathematics
+        - grade: 8.5
+          subject_name: Mathematics
+        first_name: John
+    GradeRecord:
+      required:
+      - grade
+      - subject_name
+      type: object
+      properties:
+        subject_name:
+          type: string
+          example: Mathematics
+        grade:
+          maximum: 10
+          minimum: 0
+          type: number
+          format: float
+          example: 8.5
+      example:
+        grade: 8.5
+        subject_name: Mathematics
+

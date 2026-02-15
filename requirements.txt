@@ -1,0 +1,6 @@
+connexion[swagger-ui]==2.14.1
+python_dateutil==2.8.2
+setuptools>=21.0.0
+tinydb==4.7.0
+Flask==2.2.5
+werkzeug==2.2.2
