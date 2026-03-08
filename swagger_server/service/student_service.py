@@ -52,3 +52,23 @@ def delete(student_id):
 
     students_table.remove(Student.student_id == student_id)
     return None, 200
+
+
+def get_average_grade(student_id):
+    """Calculate average grade for a student"""
+    Student = Query()
+    result = students_table.search(Student.student_id == student_id)
+    
+    if not result:
+        return None, 404
+    
+    student = result[0]
+    grade_records = student.get('grade_records', [])
+    
+    if not grade_records:
+        return None, 404
+    
+    total = sum(record.get('grade', 0) for record in grade_records)
+    average = total / len(grade_records)
+    
+    return average, 200
